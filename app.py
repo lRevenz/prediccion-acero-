@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.neural_network import MLPRegressor
 
 # Mostrar la imagen de la universidad
-st.image("https://github.com/lRevenz/prediccion-acero-/blob/main/logo%20URP.jpg", caption="Proyecto realizado por estudiantes de la Universidad Ricardo Palma", use_container_width=True)
+st.image("https://github.com/lRevenz/prediccion-acero-/blob/main/logo%20URP.jpg?raw=true", caption="Proyecto realizado por estudiantes de la Universidad Ricardo Palma", use_container_width=True)
 
 # Solicitar el nombre del usuario
 nombre_usuario = st.text_input("¿Cuál es tu nombre?", "")
