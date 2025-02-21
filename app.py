@@ -98,11 +98,11 @@ if st.session_state.step == 3:
         \]
 
         Donde:
-        - `Mu` es el momento flector (kg·cm),
-        - `fy` es la resistencia del acero (kg/cm²),
-        - `fc` es la resistencia del concreto (kg/cm²),
-        - `b` es el ancho de la sección (cm),
-        - `d` es la altura útil de la sección (cm).
+        - `Mu`: Momento flector (kg·cm),
+        - `fy`: Resistencia del acero (kg/cm²),
+        - `fc`: Resistencia del concreto (kg/cm²),
+        - `b`: Ancho de la sección (cm),
+        - `d`: Altura útil de la sección (cm).
         
     3. **Reemplazo de valores**: 
         Usando los valores ingresados por el usuario, sustituimos las variables en la fórmula:
@@ -111,7 +111,7 @@ if st.session_state.step == 3:
         As = \frac{7000 \times 3500}{300 \times 30 \times 50}
         \]
 
-        Esto nos da el valor del área de acero (As) predicha.
+        Esto nos da el valor del área de acero (**As**) predicha.
 
     4. **Recomendación del Tipo de Acero**:
         Según el área de acero calculada, se recomienda usar un tipo de acero específico:
