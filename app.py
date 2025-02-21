@@ -5,7 +5,7 @@ from sklearn.neural_network import MLPRegressor
 
 # Título y descripción del proyecto
 st.title("Proyecto de Cálculo de Acero de Refuerzo")
-st.image("https://github.com/lRevenz/prediccion-acero-/blob/main/logo%20URP.jpg?raw=true", caption="Proyecto realizado por estudiantes de la Universidad Ricardo Palma", use_container_width=True)
+st.image("https://github.com/lRevenz/prediccion-acero-/raw/main/logo%20URP.jpg", caption="Proyecto realizado por estudiantes de la Universidad Ricardo Palma", use_container_width=True)
 
 # Manejo del flujo entre pasos
 if "step" not in st.session_state:
@@ -19,6 +19,7 @@ if st.session_state.step == 1:
     if nombre_usuario:
         st.session_state.nombre_usuario = nombre_usuario
         st.session_state.step = 2  # Mover a la siguiente etapa cuando el nombre se ingresa
+        st.write(f"¡Hola {nombre_usuario}! Bienvenido al proyecto.")
 
 # Paso 2: Ingresar los datos para el cálculo del acero
 if st.session_state.step == 2:
@@ -78,18 +79,37 @@ if st.session_state.step == 2:
 if st.session_state.step == 3:
     st.subheader("Paso 3: Procedimiento y resultados")
     
-    # Procedimiento de cálculo
+    # Procedimiento de cálculo con fórmulas detalladas
     st.write("""
-    1. **Definición de Parámetros**: Se utilizan los siguientes parámetros para el cálculo:
-       - `fy`: Resistencia del acero.
-       - `f'c`: Resistencia del concreto.
-       - `b`: Ancho de la sección.
-       - `d`: Altura útil de la sección.
-       - `Mu`: Momento flector.
-    
-    2. **Cálculo del Área de Acero**: El área de acero se calcula utilizando una fórmula simplificada que relaciona el momento flector, la resistencia del acero y el concreto, el ancho de la sección y la altura útil.
+    **Procedimiento para el cálculo del área de acero**:
 
-    3. **Recomendación del Tipo de Acero**: Según el área de acero calculada, se recomienda usar un tipo de acero específico (3/8, 1/2, 5/8, 3/4) en función de las necesidades del proyecto.
+    1. **Definición de Parámetros**:
+        - `fy`: Resistencia del acero en kg/cm².
+        - `f'c`: Resistencia del concreto en kg/cm².
+        - `b`: Ancho de la sección en cm.
+        - `d`: Altura útil de la sección en cm.
+        - `Mu`: Momento flector en kg·cm.
+
+    2. **Cálculo del Área de Acero (As)**:
+        La fórmula utilizada para calcular el área de acero es:
+        
+        \[
+        As = \frac{Mu \times fy}{fc \times b \times d}
+        \]
+
+        Donde:
+        - `Mu` es el momento flector (kg·cm),
+        - `fy` es la resistencia del acero,
+        - `fc` es la resistencia del concreto,
+        - `b` es el ancho de la sección, 
+        - `d` es la altura útil de la sección.
+
+    3. **Recomendación del Tipo de Acero**:
+        Según el área de acero calculada, se recomienda usar un tipo de acero específico:
+        - Si **As** es menor que 100 cm², recomendamos **acero de 3/8**.
+        - Si **As** está entre 100 y 200 cm², recomendamos **acero de 1/2**.
+        - Si **As** está entre 200 y 300 cm², recomendamos **acero de 5/8**.
+        - Si **As** es mayor que 300 cm², recomendamos **acero de 3/4**.
     """)
 
     # Mostrar el área de acero calculada y la recomendación
