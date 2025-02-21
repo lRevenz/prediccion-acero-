@@ -21,7 +21,7 @@ fy_input = st.number_input('Resistencia del acero (fy) en kg/cm²', min_value=0,
 fc_input = st.number_input("Resistencia del concreto (f'c) en kg/cm²", min_value=0, max_value=500, value=300)
 b_input = st.number_input('Ancho de la sección (b) en cm', min_value=0, max_value=100, value=30)
 d_input = st.number_input('Altura útil de la sección (d) en cm', min_value=0, max_value=100, value=50)
-Mu_input = st.number_input('Momento flector (Mu) en kg·cm', min_value=0, max_value=10000, value=7000)
+Mu_input = st.number_input('Momento flector (Mu) en kg·cm', min_value=0, max_value=10000, value=2000)
 
 # Botón para realizar el cálculo
 calcular = st.button("Calcular Área de Acero")
@@ -90,10 +90,10 @@ if st.session_state.prediccion is not None:
         La fórmula utilizada para calcular el área de acero es:
     """)
 
-    # Fórmula en formato LaTeX
-    st.latex(r'As = \frac{Mu \times fy}{fc \times b \times d}')
-    
-    st.write("""
+    # Fórmula en formato LaTeX con los valores actuales
+    st.latex(f'As = \\frac{{Mu \\times fy}}{{fc \\times b \\times d}}')
+
+    st.write(f"""
         Donde:
         - `Mu`: Momento flector (kg·cm),
         - `fy`: Resistencia del acero (kg/cm²),
@@ -106,7 +106,7 @@ if st.session_state.prediccion is not None:
     """)
 
     # Fórmula con los valores del usuario
-    st.latex(r'As = \frac{7000 \times 3500}{300 \times 30 \times 50}')
+    st.latex(f'As = \\frac{{{Mu_input} \\times {fy_input}}}{{{fc_input} \\times {b_input} \\times {d_input}}}')
     
     st.write("""
         Esto nos da el valor del área de acero (As) predicha.
@@ -130,6 +130,3 @@ if st.session_state.prediccion is not None:
         st.write("Te recomendamos usar acero de 5/8.")
     else:
         st.write("Te recomendamos usar acero de 3/4.")
-
-    # Botón para recalcular
-    st.button("Recalcular con nuevos parámetros")
