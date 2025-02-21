@@ -27,7 +27,7 @@ if st.session_state.step == 2:
     st.subheader("Paso 2: Introduzca los parámetros para calcular el área de acero")
     
     # Crear un formulario para que el usuario ingrese los datos
-    with st.form(key="input_form"):
+    with st.form(key="input_form", clear_on_submit=True):  # Agregar `clear_on_submit=True` para resetear
         fy_input = st.number_input('Resistencia del acero (fy) en kg/cm²', min_value=0, max_value=5000, value=3500)
         fc_input = st.number_input("Resistencia del concreto (f'c) en kg/cm²", min_value=0, max_value=500, value=300)
         b_input = st.number_input('Ancho de la sección (b) en cm', min_value=0, max_value=100, value=30)
