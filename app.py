@@ -93,10 +93,12 @@ if st.session_state.step == 3:
     2. **Fórmula para el Cálculo del Área de Acero (As)**:
         La fórmula utilizada para calcular el área de acero es:
 
-        \[
-        As = \frac{Mu \times fy}{fc \times b \times d}
-        \]
-
+        """)
+        
+    # Fórmula en formato LaTeX
+    st.latex(r'As = \frac{Mu \times fy}{fc \times b \times d}')
+    
+    st.write("""
         Donde:
         - `Mu`: Momento flector (kg·cm),
         - `fy`: Resistencia del acero (kg/cm²),
@@ -106,11 +108,12 @@ if st.session_state.step == 3:
         
     3. **Reemplazo de valores**: 
         Usando los valores ingresados por el usuario, sustituimos las variables en la fórmula:
+    """)
 
-        \[
-        As = \frac{7000 \times 3500}{300 \times 30 \times 50}
-        \]
-
+    # Fórmula con los valores del usuario
+    st.latex(r'As = \frac{7000 \times 3500}{300 \times 30 \times 50}')
+    
+    st.write("""
         Esto nos da el valor del área de acero (**As**) predicha.
 
     4. **Recomendación del Tipo de Acero**:
