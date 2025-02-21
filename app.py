@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.neural_network import MLPRegressor
+import time
 
 # Título y descripción del proyecto
 st.title("Proyecto de Cálculo de Acero de Refuerzo")
@@ -36,6 +37,12 @@ if st.session_state.step == 2:
         submit_button = st.form_submit_button(label="Calcular Área de Acero")
     
     if submit_button:
+        # Animación de progreso
+        progress_bar = st.progress(0)
+        for i in range(100):
+            time.sleep(0.05)
+            progress_bar.progress(i + 1)
+        
         # Realizar el cálculo cuando el usuario presiona el botón de "Calcular"
         # Generación de datos ficticios (usados para entrenar el modelo)
         np.random.seed(42)
@@ -92,8 +99,7 @@ if st.session_state.step == 3:
 
     2. **Fórmula para el Cálculo del Área de Acero (As)**:
         La fórmula utilizada para calcular el área de acero es:
-
-        """)
+    """)
         
     # Fórmula en formato LaTeX
     st.latex(r'As = \frac{Mu \times fy}{fc \times b \times d}')
@@ -114,7 +120,7 @@ if st.session_state.step == 3:
     st.latex(r'As = \frac{7000 \times 3500}{300 \times 30 \times 50}')
     
     st.write("""
-        Esto nos da el valor del área de acero (**As**) predicha.
+        Esto nos da el valor del área de acero (As) predicha.
 
     4. **Recomendación del Tipo de Acero**:
         Según el área de acero calculada, se recomienda usar un tipo de acero específico:
