@@ -130,3 +130,6 @@ if st.session_state.prediccion is not None:
         st.write("Te recomendamos usar acero de 5/8.")
     else:
         st.write("Te recomendamos usar acero de 3/4.")
+
+    # Botón para recalcular
+    st.button("Recalcular con nuevos parámetros")
