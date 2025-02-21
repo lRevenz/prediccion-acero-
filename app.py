@@ -90,21 +90,30 @@ if st.session_state.step == 3:
         - `d`: Altura útil de la sección en cm.
         - `Mu`: Momento flector en kg·cm.
 
-    2. **Cálculo del Área de Acero (As)**:
-        La fórmula utilizada para calcular el área de acero es:
-        
+    2. **Fórmula para el Cálculo del Área de Acero (As)**:
+        Utilizamos la siguiente fórmula empírica para calcular el área de acero (As):
+
         \[
         As = \frac{Mu \times fy}{fc \times b \times d}
         \]
 
         Donde:
-        - `Mu` es el momento flector (kg·cm),
-        - `fy` es la resistencia del acero,
-        - `fc` es la resistencia del concreto,
-        - `b` es el ancho de la sección, 
-        - `d` es la altura útil de la sección.
+        - `Mu`: Momento flector (kg·cm),
+        - `fy`: Resistencia del acero (kg/cm²),
+        - `fc`: Resistencia del concreto (kg/cm²),
+        - `b`: Ancho de la sección (cm),
+        - `d`: Altura útil de la sección (cm).
+        
+    3. **Reemplazo de valores**: 
+        Usando los valores ingresados por el usuario, sustituimos las variables en la fórmula:
+        
+        \[
+        As = \frac{7000 \times 3500}{300 \times 30 \times 50}
+        \]
+        
+        Esto nos da el valor del área de acero (**As**) predicha.
 
-    3. **Recomendación del Tipo de Acero**:
+    4. **Recomendación del Tipo de Acero**:
         Según el área de acero calculada, se recomienda usar un tipo de acero específico:
         - Si **As** es menor que 100 cm², recomendamos **acero de 3/8**.
         - Si **As** está entre 100 y 200 cm², recomendamos **acero de 1/2**.
