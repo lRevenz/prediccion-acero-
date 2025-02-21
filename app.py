@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.neural_network import MLPRegressor
+import time
 
 # Título y descripción del proyecto
 st.title("Proyecto de Cálculo de Acero de Refuerzo")
@@ -18,15 +19,19 @@ if st.session_state.step == 1:
     
     if nombre_usuario:
         st.session_state.nombre_usuario = nombre_usuario
-        st.session_state.step = 2  # Mover a la siguiente etapa cuando el nombre se ingresa
-        st.write(f"¡Hola {nombre_usuario}! Bienvenido al proyecto.")
+
+    # Botones para navegar entre pasos
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Siguiente paso"):
+            st.session_state.step = 2  # Mover a la siguiente etapa cuando el nombre se ingresa
 
 # Paso 2: Ingresar los datos para el cálculo del acero
 if st.session_state.step == 2:
     st.subheader("Paso 2: Introduzca los parámetros para calcular el área de acero")
     
     # Crear un formulario para que el usuario ingrese los datos
-    with st.form(key="input_form"):
+    with st.form(key="input_form", clear_on_submit=True):  # Agregar `clear_on_submit=True` para resetear
         fy_input = st.number_input('Resistencia del acero (fy) en kg/cm²', min_value=0, max_value=5000, value=3500)
         fc_input = st.number_input("Resistencia del concreto (f'c) en kg/cm²", min_value=0, max_value=500, value=300)
         b_input = st.number_input('Ancho de la sección (b) en cm', min_value=0, max_value=100, value=30)
@@ -36,6 +41,12 @@ if st.session_state.step == 2:
         submit_button = st.form_submit_button(label="Calcular Área de Acero")
     
     if submit_button:
+        # Animación de progreso
+        progress_bar = st.progress(0)
+        for i in range(100):
+            time.sleep(0.05)
+            progress_bar.progress(i + 1)
+        
         # Realizar el cálculo cuando el usuario presiona el botón de "Calcular"
         # Generación de datos ficticios (usados para entrenar el modelo)
         np.random.seed(42)
@@ -73,7 +84,15 @@ if st.session_state.step == 2:
         
         # Guardar el resultado en el estado de la sesión
         st.session_state.prediccion = prediccion[0]
-        st.session_state.step = 3  # Mover al siguiente paso
+    
+    # Botones para navegar entre pasos
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Pestaña anterior"):
+            st.session_state.step = 1  # Regresar al paso 1
+    with col2:
+        if st.button("Siguiente paso"):
+            st.session_state.step = 3  # Pasar al siguiente paso
 
 # Paso 3: Mostrar el procedimiento y la respuesta
 if st.session_state.step == 3:
@@ -92,8 +111,7 @@ if st.session_state.step == 3:
 
     2. **Fórmula para el Cálculo del Área de Acero (As)**:
         La fórmula utilizada para calcular el área de acero es:
-
-        """)
+    """)
         
     # Fórmula en formato LaTeX
     st.latex(r'As = \frac{Mu \times fy}{fc \times b \times d}')
@@ -114,7 +132,7 @@ if st.session_state.step == 3:
     st.latex(r'As = \frac{7000 \times 3500}{300 \times 30 \times 50}')
     
     st.write("""
-        Esto nos da el valor del área de acero (**As**) predicha.
+        Esto nos da el valor del área de acero (As) predicha.
 
     4. **Recomendación del Tipo de Acero**:
         Según el área de acero calculada, se recomienda usar un tipo de acero específico:
@@ -135,3 +153,13 @@ if st.session_state.step == 3:
         st.write("Te recomendamos usar acero de 5/8.")
     else:
         st.write("Te recomendamos usar acero de 3/4.")
+
+    # Botones para navegar entre pasos
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Pestaña anterior"):
+            st.session_state.step = 2  # Regresar al paso 2
+    with col2:
+        if st.button("Finalizar"):
+            st.session_state.step = 1  # Reiniciar al paso 1
+
