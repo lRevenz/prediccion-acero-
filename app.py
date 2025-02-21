@@ -7,28 +7,35 @@ from sklearn.neural_network import MLPRegressor
 st.title("Proyecto de Cálculo de Acero de Refuerzo")
 st.image("https://github.com/lRevenz/prediccion-acero-/blob/main/logo%20URP.jpg?raw=true", caption="Proyecto realizado por estudiantes de la Universidad Ricardo Palma", use_container_width=True)
 
-# Creación de pestañas
-tab = st.radio("Selecciona una pestaña:", ["Inicio", "Cálculo de Acero", "Procedimiento"])
+# Manejo del flujo entre pasos
+if "step" not in st.session_state:
+    st.session_state.step = 1  # Paso inicial
 
-# Pestaña de "Inicio"
-if tab == "Inicio":
-    st.subheader("Bienvenido al proyecto")
-    st.write("Este proyecto ha sido desarrollado por estudiantes de la Universidad Ricardo Palma.")
-    st.write("Aquí podrás calcular el área de acero de refuerzo de una zapata, según los parámetros que ingreses.")
+# Paso 1: Ingresar el nombre del usuario
+if st.session_state.step == 1:
+    st.subheader("Paso 1: Ingrese su nombre")
+    nombre_usuario = st.text_input("¿Cuál es tu nombre?", "")
+    
+    if nombre_usuario:
+        st.session_state.nombre_usuario = nombre_usuario
+        st.session_state.step = 2  # Mover a la siguiente etapa cuando el nombre se ingresa
 
-# Pestaña de "Cálculo de Acero"
-elif tab == "Cálculo de Acero":
-    st.subheader("Introduce los parámetros para calcular el área de acero:")
+# Paso 2: Ingresar los datos para el cálculo del acero
+if st.session_state.step == 2:
+    st.subheader("Paso 2: Introduzca los parámetros para calcular el área de acero")
+    
+    # Crear un formulario para que el usuario ingrese los datos
+    with st.form(key="input_form"):
+        fy_input = st.number_input('Resistencia del acero (fy) en kg/cm²', min_value=0, max_value=5000, value=3500)
+        fc_input = st.number_input("Resistencia del concreto (f'c) en kg/cm²", min_value=0, max_value=500, value=300)
+        b_input = st.number_input('Ancho de la sección (b) en cm', min_value=0, max_value=100, value=30)
+        d_input = st.number_input('Altura útil de la sección (d) en cm', min_value=0, max_value=100, value=50)
+        Mu_input = st.number_input('Momento flector (Mu) en kg·cm', min_value=0, max_value=10000, value=7000)
 
-    # Solicitar los parámetros del usuario
-    fy_input = st.number_input('Resistencia del acero (fy) en kg/cm²', min_value=0, max_value=5000, value=3500)
-    fc_input = st.number_input("Resistencia del concreto (f'c) en kg/cm²", min_value=0, max_value=500, value=300)
-    b_input = st.number_input('Ancho de la sección (b) en cm', min_value=0, max_value=100, value=30)
-    d_input = st.number_input('Altura útil de la sección (d) en cm', min_value=0, max_value=100, value=50)
-    Mu_input = st.number_input('Momento flector (Mu) en kg·cm', min_value=0, max_value=10000, value=7000)
-
-    # Botón para realizar la predicción
-    if st.button('Calcular Área de Acero'):
+        submit_button = st.form_submit_button(label="Calcular Área de Acero")
+    
+    if submit_button:
+        # Realizar el cálculo cuando el usuario presiona el botón de "Calcular"
         # Generación de datos ficticios (usados para entrenar el modelo)
         np.random.seed(42)
 
@@ -63,22 +70,15 @@ elif tab == "Cálculo de Acero":
         nuevo_parametro = np.array([[fy_input, fc_input, b_input, d_input, Mu_input]])
         prediccion = model.predict(nuevo_parametro)
         
-        # Mostrar la predicción del área de acero
-        st.write(f"Área de acero predicha (As): {prediccion[0]:.2f} cm²")
+        # Guardar el resultado en el estado de la sesión
+        st.session_state.prediccion = prediccion[0]
+        st.session_state.step = 3  # Mover al siguiente paso
 
-        # Recomendación de tipo de acero basado en el área de acero
-        if prediccion[0] < 100:
-            st.write("Te recomendamos usar acero de 3/8.")
-        elif prediccion[0] < 200:
-            st.write("Te recomendamos usar acero de 1/2.")
-        elif prediccion[0] < 300:
-            st.write("Te recomendamos usar acero de 5/8.")
-        else:
-            st.write("Te recomendamos usar acero de 3/4.")
-
-# Pestaña de "Procedimiento"
-elif tab == "Procedimiento":
-    st.subheader("Procedimiento para calcular el área de acero")
+# Paso 3: Mostrar el procedimiento y la respuesta
+if st.session_state.step == 3:
+    st.subheader("Paso 3: Procedimiento y resultados")
+    
+    # Procedimiento de cálculo
     st.write("""
     1. **Definición de Parámetros**: Se utilizan los siguientes parámetros para el cálculo:
        - `fy`: Resistencia del acero.
@@ -92,3 +92,14 @@ elif tab == "Procedimiento":
     3. **Recomendación del Tipo de Acero**: Según el área de acero calculada, se recomienda usar un tipo de acero específico (3/8, 1/2, 5/8, 3/4) en función de las necesidades del proyecto.
     """)
 
+    # Mostrar el área de acero calculada y la recomendación
+    st.write(f"Área de acero predicha (As): {st.session_state.prediccion:.2f} cm²")
+
+    if st.session_state.prediccion < 100:
+        st.write("Te recomendamos usar acero de 3/8.")
+    elif st.session_state.prediccion < 200:
+        st.write("Te recomendamos usar acero de 1/2.")
+    elif st.session_state.prediccion < 300:
+        st.write("Te recomendamos usar acero de 5/8.")
+    else:
+        st.write("Te recomendamos usar acero de 3/4.")
